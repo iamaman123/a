@@ -19,8 +19,9 @@ const getBackendUrl = () => {
   }
   
   // Production URL
-  return 'https://a-qx8b.vercel.app';
+  return 'https://a-pied-kappa.vercel.app';
 };
+
 
 export const BACKEND_URL = getBackendUrl();
 

@@ -4,7 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "your-google-client-id-here.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "702465560392-m5dmr0ompctjmnglnnt224s6h9qj9ptg.apps.googleusercontent.com";
+
 
 export function Providers({ children }) {
     return (<ErrorBoundary>

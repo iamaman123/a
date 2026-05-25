@@ -22,20 +22,72 @@ export const generateKundli = async (req, res, next) => {
       title = `${personalInfo.name || "My"}'s Kundli`;
     }
 
-    // TODO: Integrate MCP Server and RAG for astrological calculations
-    const mockKundliData = {
-      ascendant: "Aries",
-      moonSign: "Taurus",
-      sunSign: "Gemini",
-      predictions: "You will have a great day!",
+    const mockCharts = {
+      birthChart: [
+        [7, 0, 0],
+        [0, 1, 8],
+        [6, 5, 4],
+      ],
+      navamsa: [
+        [3, 9, 2],
+        [4, 1, 12],
+        [5, 6, 11],
+      ],
+      dashamsa: [
+        [2, 3, 1],
+        [11, 1, 5],
+        [10, 9, 6],
+      ],
     };
+
+    const mockPlanetaryPositions = [
+      { planet: "Sun", sign: "Pisces", degree: "24°18'", house: 7 },
+      { planet: "Moon", sign: "Gemini", degree: "12°45'", house: 10 },
+      { planet: "Mars", sign: "Capricorn", degree: "8°32'", house: 5 },
+      { planet: "Mercury", sign: "Aquarius", degree: "15°22'", house: 6 },
+      { planet: "Jupiter", sign: "Cancer", degree: "28°15'", house: 11 },
+      { planet: "Venus", sign: "Aries", degree: "5°48'", house: 8 },
+      { planet: "Saturn", sign: "Sagittarius", degree: "22°12'", house: 4 },
+      { planet: "Rahu", sign: "Aquarius", degree: "18°35'", house: 6 },
+      { planet: "Ketu", sign: "Leo", degree: "18°35'", house: 12 },
+    ];
+
+    const mockPredictions = [
+      {
+        category: "Career & Profession",
+        description: "Excellent prospects in technology and communication fields. Jupiter in 11th house brings gains through networking and partnerships. Promotion or job change likely in next 6 months.",
+        strength: "high",
+      },
+      {
+        category: "Finance & Wealth",
+        description: "Steady financial growth with multiple income sources. Venus in 8th house suggests gains through investments. Avoid major expenses in Mercury retrograde periods.",
+        strength: "high",
+      },
+      {
+        category: "Health & Vitality",
+        description: "Generally robust health with strong immunity. Mars in 5th house gives good physical strength. Pay attention to digestive health and avoid stress-related issues.",
+        strength: "medium",
+      },
+      {
+        category: "Marriage & Relationships",
+        description: "Harmonious relationships with spouse and family. Moon in 10th house brings emotional stability. Favorable time for marriage proposals and partnerships.",
+        strength: "high",
+      },
+    ];
 
     const newKundli = await Kundli.create({
       user: req.user ? req.user.id : undefined, // Link to user if logged in
       title,
       personalInfo,
+      name: personalInfo.name,
+      dateOfBirth: req.body.dateOfBirth || (personalInfo.dateOfBirth ? new Date(personalInfo.dateOfBirth).toISOString().split('T')[0] : ""),
+      placeOfBirth: personalInfo.placeOfBirth,
+      timeOfBirth: personalInfo.timeOfBirth,
+      gender: personalInfo.gender,
+      charts: mockCharts,
+      planetaryPositions: mockPlanetaryPositions,
+      predictions: mockPredictions,
       type: type || "D1",
-      kundliData: mockKundliData, 
       status: "ready", // Mock status
     });
 

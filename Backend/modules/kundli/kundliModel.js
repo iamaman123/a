@@ -33,6 +33,24 @@ const kundliSchema = new mongoose.Schema(
         enum: ["Male", "Female", "Other"],
       },
     },
+    // Root level fields for direct Frontend alignment
+    name: String,
+    dateOfBirth: String,
+    placeOfBirth: String,
+    timeOfBirth: String,
+    gender: String,
+    charts: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
+    planetaryPositions: {
+      type: [mongoose.Schema.Types.Mixed],
+      default: [],
+    },
+    predictions: {
+      type: [mongoose.Schema.Types.Mixed],
+      default: [],
+    },
     chartData: {
       type: Object, // To store JSON containing planetary positions, birth chart, etc.
       default: {},

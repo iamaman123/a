@@ -43,7 +43,8 @@ export function KundliForm({ title = "Generate Your Kundli", isFirstTime = false
                 placeOfBirth: data.placeOfBirth,
                 gender: data.gender,
             });
-            setCurrentKundli(kundli);
+            setCurrentKundli(kundli.data?.kundli || kundli);
+
             setError(null);
             // Navigate to dashboard after successful generation
             router.push("/dashboard");

@@ -2,16 +2,19 @@
  * Dynamically resolves the backend base URL for both local development and production.
  */
 const getBackendUrl = () => {
-  // If an environment variable is defined, use it
-  if (import.meta.env.VITE_BACKEND_URL) {
-    return import.meta.env.VITE_BACKEND_URL;
-  }
-  
   // Detect if running locally
   const isLocal = typeof window !== 'undefined' && 
     (window.location.hostname === 'localhost' || 
      window.location.hostname === '127.0.0.1' || 
      window.location.hostname.startsWith('192.168.'));
+
+  // If an environment variable is defined, use it only if it doesn't mistakenly point to localhost in production
+  if (import.meta.env.VITE_BACKEND_URL) {
+    const envUrl = import.meta.env.VITE_BACKEND_URL;
+    if (isLocal || !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
+      return envUrl;
+    }
+  }
   
   if (isLocal) {
     // In local development, we keep the empty string to utilize Vite's dev server proxy (/api -> http://localhost:8080)

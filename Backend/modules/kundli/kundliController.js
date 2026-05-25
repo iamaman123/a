@@ -5,7 +5,22 @@ import AppError from "../../utils/appError.js";
 // @route   POST /api/kundli/generate
 export const generateKundli = async (req, res, next) => {
   try {
-    const { title, personalInfo, type } = req.body;
+    let { title, personalInfo, type } = req.body;
+
+    // Handle flat request structure from Frontend
+    if (!personalInfo) {
+      personalInfo = {
+        name: req.body.name,
+        dateOfBirth: req.body.dateOfBirth,
+        timeOfBirth: req.body.timeOfBirth,
+        placeOfBirth: req.body.placeOfBirth,
+        gender: req.body.gender ? (req.body.gender.charAt(0).toUpperCase() + req.body.gender.slice(1)) : undefined, // Convert male -> Male
+      };
+    }
+
+    if (!title) {
+      title = `${personalInfo.name || "My"}'s Kundli`;
+    }
 
     // TODO: Integrate MCP Server and RAG for astrological calculations
     const mockKundliData = {
@@ -19,7 +34,7 @@ export const generateKundli = async (req, res, next) => {
       user: req.user ? req.user.id : undefined, // Link to user if logged in
       title,
       personalInfo,
-      type,
+      type: type || "D1",
       kundliData: mockKundliData, 
       status: "ready", // Mock status
     });
